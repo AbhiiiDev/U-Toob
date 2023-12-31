@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
+import { SEARCH_URL, handleSearch } from '../constansts/constants';
 
 const Header = () => {
   const dispatch=useDispatch();
@@ -8,11 +9,28 @@ const Header = () => {
   const toggleBar=()=>{
     dispatch(toggleMenu());
   }
+const [searchQuery,setSearchQuery]=useState("");
 
+useEffect(() => {
+ const timer=setTimeout(()=>getSearchSuggestion(),200); 
+
+return()=>
+{
+  clearTimeout(timer);
+}
+
+}, [searchQuery])
+
+const getSearchSuggestion=async()=>
+{
+const data=await fetch(handleSearch(searchQuery));
+const json=await data.json();
+console.log(json);
+}
 
   return (
 
-    <div className='grid grid-flow-col m-2 shadow-md h-60px' style={{"height":"60px"}}>
+    <div className='grid grid-flow-col m-2 shadow-md h-60px  bg-white' style={{"height":"60px"}}>
         <div className='flex'>
      
              <img className='h-9 m-2 cursor-pointer hover:bg-gray-100' onClick={()=>toggleBar()} src='https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-hamburger-menu-button-list-content-png-image_5288864.png' alt='menu'/>
@@ -25,7 +43,7 @@ const Header = () => {
         </div>
 
         <div className='col-span-10'>
-            <input className='border border-gray-400 rounded-l-full p-1 w-1/2 text-center' type='text'/>
+            <input className='border border-gray-400 rounded-l-full p-1 w-1/2 text-center' type='text' value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}/>
             <button className='border border-gray-400 rounded-r-full p-1 hover:bg-gray-200'> Search</button>
         </div>
         

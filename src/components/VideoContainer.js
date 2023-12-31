@@ -3,6 +3,7 @@ import { VIDEO_URL } from '../constansts/constants';
 import VideoCard from './VideoCard';
 import { Link } from 'react-router-dom';
 import ButtonContainer from './ButtonContainer';
+import { VideoImageCard } from './VideoCard';
 
 
 const VideoContainer = () => {
@@ -23,10 +24,15 @@ const VideoContainer = () => {
   return (
    <>
        <ButtonContainer/>
+      
        <div className='flex flex-wrap'>
+        {videoItem[0] && <VideoImageCard info={videoItem[0]}/>}
+        
+
      {videoItem.map(video=> <Link key={video.id} to={'/watch?v='+video.id}><VideoCard key={video.id} info={video}/> </Link>)}
   
     </div>
+      
    </>
     
   )
