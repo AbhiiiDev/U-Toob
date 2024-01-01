@@ -4,7 +4,8 @@ export const VIDEO_URL="https://youtube.googleapis.com/youtube/v3/videos?part=sn
 
 export const handleSearch=(searchQuery)=>
 {
-     const SEARCH_URL=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${searchQuery}&key=`+API_KEY;
+     const SEARCH_URL=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${searchQuery}&key=`+API_KEY;
      
      return SEARCH_URL;
 }
+

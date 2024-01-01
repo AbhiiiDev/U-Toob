@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
-import { SEARCH_URL, handleSearch } from '../constansts/constants';
+import {  SEARCH_URL, handleSearch } from '../constansts/constants';
+import store from '../utils/store';
+import { cacheResult } from '../utils/searchSlice';
+
+
 
 const Header = () => {
   const dispatch=useDispatch();
@@ -10,9 +14,26 @@ const Header = () => {
     dispatch(toggleMenu());
   }
 const [searchQuery,setSearchQuery]=useState("");
+const [searchSuggestion,setSearchSuggestion]=useState([]);
+
+const searchCache=useSelector((store)=>store.search);
+
+
+// THIS IS THE EXAMPLE OF DEBOUNCING :
 
 useEffect(() => {
- const timer=setTimeout(()=>getSearchSuggestion(),200); 
+ const timer=setTimeout(()=>
+ {
+ if(searchCache && searchCache[searchQuery])
+ {
+  setSearchSuggestion(searchCache[searchQuery])
+ }
+ else {
+  getSearchSuggestion();
+  
+ }
+}
+ ,200); 
 
 return()=>
 {
@@ -21,12 +42,21 @@ return()=>
 
 }, [searchQuery])
 
+
 const getSearchSuggestion=async()=>
 {
 const data=await fetch(handleSearch(searchQuery));
 const json=await data.json();
-console.log(json);
+
+json?.items.map((item)=>
+setSearchSuggestion(item.id.videoId));
+dispatch(cacheResult({ key: searchQuery, value: searchSuggestion }));
+
+console.log(searchSuggestion)
+// setSearchSuggestion(json.etag);
+
 }
+
 
   return (
 
@@ -44,8 +74,22 @@ console.log(json);
 
         <div className='col-span-10'>
             <input className='border border-gray-400 rounded-l-full p-1 w-1/2 text-center' type='text' value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}/>
+ 
             <button className='border border-gray-400 rounded-r-full p-1 hover:bg-gray-200'> Search</button>
+{
+  Array.isArray(searchSuggestion) && searchSuggestion.length > 0 && 
+  ( <div> 
+    {searchSuggestion.map((item)=>
+    <ul>
+      <li>{item}</li>
+    </ul>)}
+  </div>
+  )
+    
+}
+ 
         </div>
+
         
         <div className='col-span-1'>
             <img className='h-11 cursor-pointer' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKfF_0m15ftLpDilh8B5f41cbF_pMNCdbSqw&usqp=CAU' alt='profile'/>
