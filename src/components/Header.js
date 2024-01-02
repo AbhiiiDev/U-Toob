@@ -47,8 +47,7 @@ const getSearchSuggestion=async()=>
 {
 const data=await fetch(handleSearch(searchQuery));
 const json=await data.json();
-
-json?.items.map((item)=>
+json?.items?.map((item)=>
 setSearchSuggestion(item.id.videoId));
 dispatch(cacheResult({ key: searchQuery, value: searchSuggestion }));
 

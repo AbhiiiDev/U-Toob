@@ -15,8 +15,8 @@ const VideoContainer = () => {
 
   const videoSync=async()=>{
     const data=await fetch(VIDEO_URL);
-    const json= await data.json();
-     setVideoItems(json.items)
+    const json= await data?.json();
+     setVideoItems(json?.items)
     //  console.log(json.items)
  
   }
