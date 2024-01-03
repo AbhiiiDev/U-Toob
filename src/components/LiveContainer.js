@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import ChatMessage from './ChatMessage'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMessage } from '../utils/chatSlice';
-import store from '../utils/store';
+
 import { generateRandomNames } from './helper/randomNames';
 import { generateRandomText } from './helper/randomMessage';
 import { randomEmoji } from './helper/randomEmoji';

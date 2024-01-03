@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
-import {  SEARCH_URL, handleSearch } from '../constansts/constants';
-import store from '../utils/store';
+import {  handleSearch } from '../constansts/constants';
+
 import { cacheResult } from '../utils/searchSlice';
 
 
